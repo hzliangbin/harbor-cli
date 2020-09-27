@@ -13,7 +13,10 @@ import (
 )
 
 func main() {
-	initLogs()
+
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	//flag.CommandLine.Parse([]string{})
+	flag.Set("logtostderr","true")
 
 	cmd, err := newRootCmd(os.Stdout, os.Args[1:])
 	if err != nil {
@@ -25,12 +28,6 @@ func main() {
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-}
-
-func initLogs() {
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	flag.CommandLine.Parse([]string{})
-	flag.Set("logtostderr","true")
 }
 
 func initConfig() {

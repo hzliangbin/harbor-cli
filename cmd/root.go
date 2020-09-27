@@ -15,10 +15,10 @@ func newRootCmd(out io.Writer, args []string) (*cobra.Command, error) {
 
 	cmd.PersistentFlags().StringVarP(&types.CfgFile, "config","c","",
 		"配置文件路程，默认当前目录下 registry-manager.yml文件")
-	//flags := cmd.PersistentFlags()
-	//flags.ParseErrorsWhitelist.UnknownFlags = true
-	//flags.Parse(args)
-	//
+	flags := cmd.PersistentFlags()
+	flags.ParseErrorsWhitelist.UnknownFlags = true
+	flags.Parse(args)
+
 	cmd.AddCommand(
 		newDeleteCmd(out),
 		newTopCmd(out))

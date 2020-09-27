@@ -11,12 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package types
 
-var (
-	CfgFile string
-	Manager RegistryManager
-	TopNum int
-)
+import "time"
 
-type MaxHeapForTags []Tag
+type Tags []Tag
+
+func (tags Tags) Len() int {
+	return len(tags)
+}
+func (tags Tags) Swap(i, j int) {
+	tags[i], tags[j] = tags[j], tags[i]
+}
+func (tags Tags) Less(i, j int) bool {
+	return tags[j].CreateTime.Before(tags[i].CreateTime)
+}
+
+type Tag struct {
+	Name       string
+	CreateTime time.Time
+}
