@@ -5,6 +5,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/hzliangbin/harbor-cli/pkg/types"
 	"github.com/spf13/pflag"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -13,10 +14,10 @@ import (
 )
 
 func main() {
-
+	pflag.CommandLine.SetNormalizeFunc(wordSepNormalizeFunc)
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	//flag.CommandLine.Parse([]string{})
-	flag.Set("logtostderr","true")
+	flag.CommandLine.Parse([]string{})
+	pflag.Set("logtostderr","true")
 
 	cmd, err := newRootCmd(os.Stdout, os.Args[1:])
 	if err != nil {
@@ -47,4 +48,8 @@ func initConfig() {
 		panic(err)
 	}
 	types.Manager.Init()
+}
+
+func wordSepNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
+	return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
 }

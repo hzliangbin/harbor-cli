@@ -11,8 +11,9 @@ func (r Repos)Len() int {
 	return len(r)
 }
 
+//小根堆
 func (r Repos) Less(i,j int) bool {
-	return r[i].TagsNum > r[j].TagsNum
+	return r[i].TagsNum < r[j].TagsNum
 }
 
 func (r *Repos) Swap(i,j int) {

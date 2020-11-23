@@ -6,6 +6,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
 	"io"
+	"sort"
 
 	. "github.com/hzliangbin/harbor-cli/pkg/types"
 )
@@ -18,19 +19,22 @@ func newTopCmd(out io.Writer) *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			repositories := Manager.Repositories()
 			repositoriesCount := len(repositories)
-			repoHeap := make(Repos, TopNum)
-			heap.Init(&repoHeap)
+			//repoHeap := make(Repos, TopNum)
+			repoHeap := &Repos{}
+			heap.Init(repoHeap)
 			for i, repo := range repositories {
-				glog.Infof("handling %d/%d repo: %s", i+1, repositoriesCount, repo)
 				tags := Manager.Tags(repo)
+				glog.Infof("handling %d/%d repo: %s tags: %d", i+1, repositoriesCount, repo,len(tags))
 				r := Repo{Name: repo, TagsNum: len(tags)}
-				heap.Push(&repoHeap, r)
-				if len(repoHeap) > TopNum {
-					heap.Pop(&repoHeap)
+				heap.Push(repoHeap, r)
+				//pop出小的，最后剩下大的
+				if len(*repoHeap)> TopNum {
+					heap.Pop(repoHeap)
 				}
 			}
-			for _, repo := range repoHeap {
-				fmt.Println(out, repo)
+			sort.Sort(repoHeap)
+			for i := len(*repoHeap) - 1; i >= 0; i-- {
+				fmt.Println((*repoHeap)[i].Name, (*repoHeap)[i].TagsNum)
 			}
 		},
 	}
