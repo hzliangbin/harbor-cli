@@ -4,7 +4,6 @@ import (
 	"github.com/hzliangbin/harbor-cli/pkg/types"
 	"github.com/spf13/cobra"
 	"io"
-	"os"
 )
 
 func newRootCmd(out io.Writer, args []string) (*cobra.Command, error) {
@@ -16,15 +15,19 @@ func newRootCmd(out io.Writer, args []string) (*cobra.Command, error) {
 
 	cmd.PersistentFlags().StringVarP(&types.CfgFile, "config","c","",
 		"config file path，default to current dir to find registry-manager.yml")
+
 	flags := cmd.PersistentFlags()
 	flags.ParseErrorsWhitelist.UnknownFlags = true
-	err := flags.Parse(args)
-	if err != nil {
-		os.Exit(1)
-	}
+	//err := flags.Parse(args)
+	//if err != nil {
+	//	os.Exit(1)
+	//}
 
 	cmd.AddCommand(
 		newDeleteCmd(out),
-		newTopCmd(out))
+		newTopCmd(out),
+		newLoadCmd(out),
+		newSaveCmd(out),
+		)
 	return cmd, nil
 }
