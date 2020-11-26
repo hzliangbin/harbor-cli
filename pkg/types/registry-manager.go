@@ -55,8 +55,11 @@ func (r *RegistryManager) Init() {
 	var err error
 	if r.InsecureSkipTLSVerify {
 		r.Client, err = registry.New(r.Server, r.Username, r.Password)
+
 	} else {
+		fmt.Println(r.Username)
 		r.Client, err = registry.NewInsecure(r.Server, r.Username, r.Password)
+		glog.V(2).Infof("manager init as server: %s, username: %s, password: %s",r.Server,r.Username,r.Password)
 	}
 	if err != nil {
 		glog.Exit(err)
@@ -86,6 +89,10 @@ func (r *RegistryManager) Repositories() []string {
 	repositories, e := r.Client.Repositories()
 	utils.CheckErr(e)
 	return repositories
+}
+
+func (r *RegistryManager) HarborAddress() string {
+	return r.Server
 }
 
 // 获取镜像层信息

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/golang/glog"
 	"github.com/hzliangbin/harbor-cli/pkg/types"
 	"github.com/spf13/pflag"
@@ -38,7 +39,7 @@ func initConfig() {
 		viper.AddConfigPath(".")
 		viper.SetConfigName("registry-manager")
 	}
-	viper.AutomaticEnv()
+	//viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err == nil {
 		glog.Infof("use config file: %s", viper.ConfigFileUsed())
@@ -47,6 +48,7 @@ func initConfig() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("username : ",types.Manager.Username)
 	types.Manager.Init()
 }
 

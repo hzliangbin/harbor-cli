@@ -34,7 +34,7 @@ func newTopCmd(out io.Writer) *cobra.Command {
 			}
 			sort.Sort(repoHeap)
 			for i := len(*repoHeap) - 1; i >= 0; i-- {
-				fmt.Println((*repoHeap)[i].Name, (*repoHeap)[i].TagsNum)
+				fmt.Fprint(out,(*repoHeap)[i].Name, (*repoHeap)[i].TagsNum)
 			}
 		},
 	}
