@@ -12,6 +12,7 @@ func ExecuteCommand(name string, subname string, args ...string) (string, error)
 
 	cmd := exec.Command(name, args...)
 	bytes, err := cmd.CombinedOutput()
+	fmt.Println(err)
 	return string(bytes), err
 }
 
